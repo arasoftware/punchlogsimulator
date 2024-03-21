@@ -16,7 +16,7 @@ public class App {
 
     public static void main(String[] args) throws MqttException, InterruptedException {
 
-        DeviceThreadManager publisher = new DeviceThreadManager(15);
+        DeviceThreadManager publisher = new DeviceThreadManager(50);
         // Start the publisher thread
         Thread publisherThread = new Thread(() -> publisher.publishWithRetry());
         publisherThread.start();

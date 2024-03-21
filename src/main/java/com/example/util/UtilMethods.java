@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.Random;
 
 public class UtilMethods {
-    public static final String LOG_PUSH_TOPIC = "mqtt/face/1973262/Rec";
+    public static final String broker = "tcp://192.168.1.3:1883"; // MQTT broker address
+    public static final String LOG_PUSH_TOPIC = "mqtt/face/%s/Rec";
     JSONObject jsonObject;
     String resourceName = "log_sample.json";
     Random random = new Random();
@@ -62,7 +63,7 @@ public class UtilMethods {
     public void generateDeviceModels(int numberOfDevices) {
         List<DeviceModel> deviceModelsDummy = new ArrayList<>(numberOfDevices);
         for (int i = 0; i < numberOfDevices; i++) {
-            deviceModelsDummy.add(new DeviceModel("" + i, "Device-" + i));
+            deviceModelsDummy.add(new DeviceModel("" + 1000 + i, "Device-" + i));
         }
         this.deviceModels = deviceModelsDummy;
     }
