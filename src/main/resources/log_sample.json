@@ -1,0 +1,33 @@
+{
+  "operator": "RecPush",
+  "info": {
+    "customId": "E012",
+    "personId": "191",
+    "RecordID": "3",
+    "VerifyStatus": "1",
+    "PersonType": "0",
+    "similarity1": "96.800003",
+    "similarity2": "0.000000",
+    "Sendintime": 0,
+    "direction": "entr",
+    "otype": "1",
+    "persionName": "Murugesan",
+    "facesluiceId": "1973262",
+    "facesluiceName": "Face1",
+    "idCard": "421381199504030012",
+    "telnum": "13690880000",
+    "left": "138",
+    "top": "390",
+    "right": "429",
+    "bottom": "687",
+    "time": "2024-03-19 02:54:35",
+    "PushType": "0",
+    "OpendoorWay": "0",
+    "cardNum2": "1",
+    "RFIDCard": "0",
+    "szQrCodeData": "",
+    "isNoMask": "0",
+    "dwFileIndex": "0",
+    "dwFilePos": "40697856"
+  }
+}
