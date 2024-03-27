@@ -32,7 +32,7 @@ public class DeviceThreadManager {
         this.logCounter = new AtomicInteger();
         // Enable logging for MQTT
         shouldRun = new AtomicBoolean(true);
-        deviceMap = new ConcurrentHashMap<>(numberOfDevices);
+      //  deviceMap = new ConcurrentHashMap<>(numberOfDevices);
 
     }
 
@@ -43,7 +43,7 @@ public class DeviceThreadManager {
             for (DeviceModel deviceModel : deviceModels) {
                 DeviceSimulator deviceSimulator = new DeviceSimulator(logCounter, utilMethods, shouldRun, deviceModel);
                 deviceThreads.submit(deviceSimulator);
-                deviceMap.put(deviceModel.getDeviceId(), deviceSimulator);
+             //   deviceMap.put(deviceModel.getDeviceId(), deviceSimulator);
             }
         } catch (MqttException mqttException) {
             logger.error(mqttException.getMessage());
@@ -60,7 +60,7 @@ public class DeviceThreadManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("All Devices are stopped");
+        logger.info("All Devices are stopped - {} ",logCounter.get());
 
     }
 
