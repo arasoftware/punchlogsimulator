@@ -4,8 +4,11 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.internal.HighResolutionTimer;
+import org.h2.tools.Server;
 
 import com.example.functionality.DeviceThreadManager;
+import com.example.functionality.H2DatabaseManager;
 
 /**
  * Hello world!
@@ -14,7 +17,14 @@ import com.example.functionality.DeviceThreadManager;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
+
     public static void main(String[] args) throws MqttException, InterruptedException {
+        
+   
+
+       //  H2DatabaseManager.dropTable();
+
+        H2DatabaseManager.initializeDatabase();
 
         DeviceThreadManager publisher = new DeviceThreadManager(50);
         // Start the publisher thread
@@ -29,7 +39,6 @@ public class App {
                 System.out.println("Publisher stopped.");
 
             } catch (IOException e) {
-
                 e.printStackTrace();
             }
 

@@ -1,5 +1,6 @@
 package com.example.model;
 
+
 public class BasicMessageModel {
     private String recordId;
     private String deviceId;
@@ -54,6 +55,8 @@ public class BasicMessageModel {
         this.deviceId = deviceId;
         this.deviceName = deviceName;
     }
+
+    public BasicMessageModel(){}
 
     @Override
     public String toString() {
