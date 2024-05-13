@@ -62,7 +62,7 @@ public class DeviceSimulator implements Runnable, MqttCallback {
         mqttClient.connect(connOpts);
         String topicName = String.format(UtilMethods.ACK_TOPIC, deviceModel.getDeviceId());
         mqttClient.subscribe(topicName);
-        connection = new MongoDBConnection();
+        // connection = new MongoDBConnection();
     }
 
     public void run() {
@@ -73,7 +73,7 @@ public class DeviceSimulator implements Runnable, MqttCallback {
         try {
 
             // Future<?> makingLogThread = executorService.submit(() -> makingLog());
-            Future<?> logThread = executorService.submit(() -> publishLog2());
+            Future<?> logThread = executorService.submit(() -> publishLog());
             Future<?> heartBeatThread = executorService.submit(() -> publishHeartBeat());
             // Future<?> mLogHitThread = executorService.submit(()-> logHit());
 
@@ -109,8 +109,9 @@ public class DeviceSimulator implements Runnable, MqttCallback {
                 String message = utilMethods.createHeartBeatJson(heartBeatModel);
                 String topicName = String.format(UtilMethods.HEARTBEAT_PUSH_TOPIC);
                 mqttClient.publish(topicName, message.getBytes(), 1, false);
-             //   logger.info("Published heartbeat  for " + heartBeatModel.getDeviceId());
-              //  logger.info("Published heartbeat Count: {}", heartBeatCounter.incrementAndGet());
+                // logger.info("Published heartbeat for " + heartBeatModel.getDeviceId());
+                // logger.info("Published heartbeat Count: {}",
+                // heartBeatCounter.incrementAndGet());
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
                 logger.error(e.getMessage());
@@ -276,7 +277,7 @@ public class DeviceSimulator implements Runnable, MqttCallback {
                 String topicName = String.format(UtilMethods.LOG_PUSH_TOPIC, deviceModel.getDeviceId());
                 boolean shouldCreateNewRecord = utilMethods.getRandomBoolean();
 
-                if(basicMessageModel==null){
+                if (basicMessageModel == null) {
                     logger.info("All Logs Processed.......................................................");
                     break;
                 }
@@ -313,7 +314,6 @@ public class DeviceSimulator implements Runnable, MqttCallback {
 
             }
 
-           
         }
 
         logger.info("Log Stopped {}", deviceModel);
@@ -342,7 +342,7 @@ public class DeviceSimulator implements Runnable, MqttCallback {
             // TODO: find index from HashMap and remove from List
             // H2DatabaseManager.deleteData(deviceId, recordId);
             // simQueue.removeMessage(recordId);
-            deleteByDeviceIdAndRecordId(deviceId, recordId);
+            // deleteByDeviceIdAndRecordId(deviceId, recordId);
 
             logger.info("message Arrived recordId is  {} for device {}", recordId, deviceId);
         }
