@@ -29,12 +29,12 @@ public class DeviceThreadManager {
 
     public DeviceThreadManager(int numberOfDevices) throws MqttException {
         this.numberOfDevices = numberOfDevices;
-        this.utilMethods = new UtilMethods(numberOfDevices, 5);
+        this.utilMethods = new UtilMethods(numberOfDevices, 5, 100, "Device-Mac");
         this.logCounter = new AtomicInteger();
-        this.duplicateLogCounter=new AtomicInteger();
+        this.duplicateLogCounter = new AtomicInteger();
         // Enable logging for MQTT
         shouldRun = new AtomicBoolean(true);
-      //  deviceMap = new ConcurrentHashMap<>(numberOfDevices);
+        // deviceMap = new ConcurrentHashMap<>(numberOfDevices);
 
     }
 
@@ -43,9 +43,10 @@ public class DeviceThreadManager {
             List<DeviceModel> deviceModels = utilMethods.getDeviceModels();
             deviceThreads = Executors.newFixedThreadPool(numberOfDevices);
             for (DeviceModel deviceModel : deviceModels) {
-                DeviceSimulator deviceSimulator = new DeviceSimulator(logCounter,duplicateLogCounter, utilMethods, shouldRun, deviceModel);
+                DeviceSimulator deviceSimulator = new DeviceSimulator(logCounter, duplicateLogCounter, utilMethods,
+                        shouldRun, deviceModel);
                 deviceThreads.submit(deviceSimulator);
-             //   deviceMap.put(deviceModel.getDeviceId(), deviceSimulator);
+                // deviceMap.put(deviceModel.getDeviceId(), deviceSimulator);
             }
         } catch (MqttException mqttException) {
             logger.error(mqttException.getMessage());
@@ -62,8 +63,8 @@ public class DeviceThreadManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        logger.info("All Devices are stopped - Log Count - {} ",logCounter.get());
-        logger.info("All Devices are stopped - Duplicate Log Count - {} ",duplicateLogCounter.get());
+        logger.info("All Devices are stopped - Log Count - {} ", logCounter.get());
+        logger.info("All Devices are stopped - Duplicate Log Count - {} ", duplicateLogCounter.get());
 
     }
 

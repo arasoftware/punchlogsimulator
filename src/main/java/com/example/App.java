@@ -9,6 +9,7 @@ import org.h2.tools.Server;
 
 import com.example.functionality.DeviceThreadManager;
 import com.example.functionality.H2DatabaseManager;
+import com.example.functionality.PushInMemoryLogSimulator;
 
 /**
  * Hello world!
@@ -17,12 +18,55 @@ import com.example.functionality.H2DatabaseManager;
 public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-
     public static void main(String[] args) throws MqttException, InterruptedException {
-        
-   
+        chooseAndRunPath(args);
+        logger.info("MAIN ENDS");
+    }
 
-       //  H2DatabaseManager.dropTable();
+    private static void chooseAndRunPath(String[] args) throws MqttException, InterruptedException {
+        if (args.length == 0) {
+            logger.error(
+                    "PASS parameter 'static - to publish given number of message' or 'dynamic - dynamically publish without stopping' ");
+            return;
+        }
+        String command = args[0];
+        switch (command.toLowerCase()) {
+            case "dynamic":
+                dynamicLogPushLogic();
+                break;
+            case "static":
+                if (args.length < 6) {
+                    logger.error("number of devices, employees and logs are necessary to run... please provide it.");
+                    return;
+                }
+
+                int numberOfDevices = Integer.parseInt(args[1]);
+                int numberOfEmployees = Integer.parseInt(args[2]);
+                int numberOfLogs = Integer.parseInt(args[3]);
+                int deviceIdStart = Integer.parseInt(args[4]);
+                String deviceNamePrefix = args[5];
+                staticLogPush(numberOfDevices, numberOfEmployees, numberOfLogs, deviceIdStart, deviceNamePrefix);
+                break;
+
+            default:
+                logger.error("Invalid command, must be either 'dynamic' or 'static' ");
+                break;
+        }
+
+    }
+
+    private static void staticLogPush(int numberOfDevices, int numberOfEmployees, int numberOfLogs,
+            int deviceIdStart, String deviceNamePrefix)
+            throws MqttException {
+
+        PushInMemoryLogSimulator pushInMemoryLogSimulator = new PushInMemoryLogSimulator(numberOfDevices,
+                numberOfEmployees, numberOfLogs, deviceIdStart, deviceNamePrefix);
+
+        pushInMemoryLogSimulator.runAll();
+    }
+
+    private static void dynamicLogPushLogic() throws MqttException, InterruptedException {
+        // H2DatabaseManager.dropTable();
 
         H2DatabaseManager.initializeDatabase();
 
@@ -48,8 +92,6 @@ public class App {
         // Wait for both threads to finish
         publisherThread.join();
         inputThread.join();
-
-        logger.info("MAIN ENDS");
     }
 
 }

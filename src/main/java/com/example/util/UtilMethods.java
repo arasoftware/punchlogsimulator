@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UtilMethods {
-    public static final String broker = "tcp://192.168.1.5:1883"; // MQTT broker address
+    public static final String broker = "tcp://192.168.1.4:1883"; // MQTT broker address
     public static final String LOG_PUSH_TOPIC = "mqtt/face/%s/Rec";
     public static final String ACK_TOPIC = "mqtt/face/%s";
     public static final String HEARTBEAT_PUSH_TOPIC = "mqtt/face/heartbeat";
@@ -27,9 +27,13 @@ public class UtilMethods {
     Random random = new Random();
     List<DeviceModel> deviceModels;
     List<EmployeeModel> employeeModels;
+    int deviceIdStart = 10000;
+    String deviceNamePrefix = "Device-Mac";
 
-    public UtilMethods(int numberOfDevices, int numberOfEmployees) {
-
+    public UtilMethods(int numberOfDevices, int numberOfEmployees,
+            int deviceIdStart, String deviceNamePrefix) {
+        this.deviceIdStart = deviceIdStart;
+        this.deviceNamePrefix = deviceNamePrefix;
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
         if (inputStream != null) {
 
@@ -82,7 +86,8 @@ public class UtilMethods {
     public void generateDeviceModels(int numberOfDevices) {
         List<DeviceModel> deviceModelsDummy = new ArrayList<>(numberOfDevices);
         for (int i = 0; i < numberOfDevices; i++) {
-            deviceModelsDummy.add(new DeviceModel("" + 1000 + i, "Device-" + i));
+
+            deviceModelsDummy.add(new DeviceModel("" + (deviceIdStart + i), deviceNamePrefix + i));
         }
         this.deviceModels = deviceModelsDummy;
     }
@@ -138,14 +143,15 @@ public class UtilMethods {
     public List<DeviceModel> getDeviceModels() {
         return deviceModels;
     }
-    public Boolean getRandomBoolean(){
-        int rand=random.nextInt(2);
-        if(rand==1){
+
+    public Boolean getRandomBoolean() {
+        int rand = random.nextInt(2);
+        if (rand == 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
-       // return rand ==1;
+        // return rand ==1;
     }
 
 }

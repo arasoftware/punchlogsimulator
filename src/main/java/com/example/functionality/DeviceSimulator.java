@@ -58,7 +58,8 @@ public class DeviceSimulator implements Runnable, MqttCallback {
         connOpts.setCleanSession(false);
         // Set keep-alive interval to 300 seconds (5 minutes)
         connOpts.setKeepAliveInterval(300);
-
+        // connOpts.setUserName("admin");
+        // connOpts.setPassword("secret".toCharArray());
         mqttClient.connect(connOpts);
         String topicName = String.format(UtilMethods.ACK_TOPIC, deviceModel.getDeviceId());
         mqttClient.subscribe(topicName);
