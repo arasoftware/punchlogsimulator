@@ -62,7 +62,7 @@ public class App {
         PushInMemoryLogSimulator pushInMemoryLogSimulator = new PushInMemoryLogSimulator(numberOfDevices,
                 numberOfEmployees, numberOfLogs, deviceIdStart, deviceNamePrefix);
 
-        pushInMemoryLogSimulator.runAll();
+        pushInMemoryLogSimulator.prepareAndRun();
     }
 
     private static void dynamicLogPushLogic() throws MqttException, InterruptedException {

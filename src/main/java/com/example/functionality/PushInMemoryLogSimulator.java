@@ -23,25 +23,19 @@ public class PushInMemoryLogSimulator {
         utilMethods = new UtilMethods(numberOfDevices, numberOfEmployees, deviceIdStart, deviceNamePrefix);
     }
 
-    private List<InMemoryDeviceSimulator> prepareDevices() throws MqttException {
-
+    public ExecutorService prepareAndRun() throws MqttException {
+        deviceThreads = Executors.newFixedThreadPool(utilMethods.getNumberOfDevices());
         List<InMemoryDeviceSimulator> deviceSimulators = new ArrayList<>(utilMethods.getNumberOfDevices());
         int logCountPerDevice = numberOfLogs / utilMethods.getNumberOfDevices();
 
         for (DeviceModel aDeviceModel : utilMethods.getDeviceModels()) {
             List<BasicMessageModel> messageModels = createSampleMessageModels(logCountPerDevice, aDeviceModel);
-            deviceSimulators.add(new InMemoryDeviceSimulator(messageModels, utilMethods, aDeviceModel));
+            InMemoryDeviceSimulator task = new InMemoryDeviceSimulator(messageModels, utilMethods, aDeviceModel);
+            deviceSimulators.add(task);
+            deviceThreads.submit(task);
+
         }
-        return deviceSimulators;
-    }
-
-    public void runAll() throws MqttException {
-        List<InMemoryDeviceSimulator> deviceSimulators = prepareDevices();
-
-        deviceThreads = Executors.newFixedThreadPool(utilMethods.getNumberOfDevices());
-        deviceSimulators.stream()
-                .forEach(task -> deviceThreads.submit(task));
-
+        return deviceThreads;
     }
 
     private List<BasicMessageModel> createSampleMessageModels(int numberOfMessage, DeviceModel forDevice) {
