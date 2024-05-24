@@ -64,36 +64,39 @@ public class InMemoryDeviceSimulator implements Runnable, MqttCallback {
     private void publishLog() {
 
         String topicName = String.format(UtilMethods.LOG_PUSH_TOPIC, deviceModel.getDeviceId());
-        while (messageModels.size() > 0) {
-            try {
+        try {
+            while (messageModels.size() > 0) {
+
                 int lastIndex = messageModels.size() - 1;
                 if (hasAckReceived.get()) {
                     messageModels.remove(lastIndex);
                 }
                 lastIndex = messageModels.size() - 1;
+                if (lastIndex == -1) {
+                    break;
+                }
+
                 BasicMessageModel basicMessageModel = messageModels.get(lastIndex);
                 String message = utilMethods.createJson(basicMessageModel);
 
                 mqttClient.publish(topicName, message.getBytes(), 1, false);
                 hasAckReceived.set(false);
-                Thread.sleep(10000);
+                Thread.sleep(1000);
                 logger.info("Published Record {} of {} device", lastIndex, deviceModel.getDeviceName());
-
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
-            } catch (MqttPersistenceException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
-            } catch (MqttException e) {
-                logger.error(e.getMessage());
-                e.printStackTrace();
             }
-
+        } catch (InterruptedException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } catch (MqttPersistenceException e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
         }
 
         logger.info("Log Stopped {}", deviceModel);
-
+        closeMqttConnection();
     }
 
     @Override

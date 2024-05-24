@@ -52,7 +52,7 @@ public class App {
                 logger.error("Invalid command, must be either 'dynamic' or 'static' ");
                 break;
         }
-
+        logger.info("choose And Run Path done.");
     }
 
     private static void staticLogPush(int numberOfDevices, int numberOfEmployees, int numberOfLogs,

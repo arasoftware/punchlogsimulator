@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class UtilMethods {
-    public static final String broker = "tcp://192.168.1.4:1883"; // MQTT broker address
+    public static final String broker = "tcp://192.168.1.2:1883"; // MQTT broker address
     public static final String LOG_PUSH_TOPIC = "mqtt/face/%s/Rec";
     public static final String ACK_TOPIC = "mqtt/face/%s";
     public static final String HEARTBEAT_PUSH_TOPIC = "mqtt/face/heartbeat";
